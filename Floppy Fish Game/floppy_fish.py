@@ -22,15 +22,18 @@ FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 
 # Sprites
 FISH_SPRITE = pygame.transform.scale(
     pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish.png')), (FISH_WIDTH, FISH_HEIGHT))
-FISHING_NET_SPRITE = pygame.transform.scale(
+NET_SPRITE = pygame.transform.scale(
     pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net.png')), (NET_WIDTH, 61))
+NET_ROD_SPRITE = pygame.transform.scale(
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net_rod.png')), (NET_WIDTH, 78))
 
 
 def draw_window(fish):
     WIN.fill(BLUE)
     WIN.blit(FISH_SPRITE, fish)
-    pygame.draw.rect(WIN, WHITE, (pygame.Rect(500, 0, 55, 200)))
-    WIN.blit(FISHING_NET_SPRITE, (500, 139))
+    WIN.blit(NET_ROD_SPRITE, (500, 78))  # FIXME: placeholder net
+    WIN.blit(NET_ROD_SPRITE, (500, 0))
+    WIN.blit(NET_SPRITE, (500, 139))
     pygame.display.update()
 
 
