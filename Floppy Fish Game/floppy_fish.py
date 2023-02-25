@@ -28,6 +28,10 @@ NET_ROD_SPRITE = pygame.transform.scale(
     pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net_rod.png')), (NET_WIDTH, 78))
 
 
+def handle_nets():
+    pass
+
+
 def draw_window(fish):
     WIN.fill(BLUE)
     WIN.blit(FISH_SPRITE, fish)
@@ -38,7 +42,10 @@ def draw_window(fish):
 
 
 def main():
+    # Hit Boxes
     fish = pygame.Rect(200, 100, 40, 40)
+    
+    # Game variables
     fish_momentum = 10
 
     clock = pygame.time.Clock()  # fps limiter
