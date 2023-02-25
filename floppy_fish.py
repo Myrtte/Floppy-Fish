@@ -54,7 +54,7 @@ def main():
 
         draw_window(fish)
 
-    pygame.quit(
+    pygame.quit()
 
 
 if __name__ == '__main__':
