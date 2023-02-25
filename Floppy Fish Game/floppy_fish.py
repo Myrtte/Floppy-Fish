@@ -61,12 +61,19 @@ def main():
                     fish_momentum -= 27
                     FISH_FLOP_SOUND.play()
 
+        # Fish Momentum
         fish_momentum += 1
         if fish_momentum > 12:
             fish_momentum = 12
         if fish_momentum < -18:
             fish_momentum = -18
         fish.y += fish_momentum
+        
+        # Fish Ceiling
+        if fish.y <= 0:
+            fish.y = 0
+        if fish.y >= 600 - FISH_HEIGHT:
+            fish.y = 600 - FISH_HEIGHT
 
         draw_window(fish)
 
