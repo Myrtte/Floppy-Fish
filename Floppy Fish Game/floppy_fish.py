@@ -5,19 +5,25 @@ import os
 pygame.font.init()
 pygame.mixer.init()
 
-WIDTH, HEIGHT = 800, 600  # creates game window
+# Game Window
+WIDTH, HEIGHT = 800, 600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Floppy Fish!')
 
-FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 'floppy_fish_peter.mp3'))
-
-FISH_SPRITE = pygame.transform.scale(pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish.png')), (43, 42))
-FISHING_NET_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net.png')), (55, 61))
-
+# Global Constants
 BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
 FISH_WIDTH, FISH_HEIGHT = 43, 42
+NET_WIDTH = 55
+
+# Sound Bytes
+FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 'floppy_fish_peter.mp3'))
+
+# Sprites
+FISH_SPRITE = pygame.transform.scale(
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish.png')), (FISH_WIDTH, FISH_HEIGHT))
+FISHING_NET_SPRITE = pygame.transform.scale(
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net.png')), (NET_WIDTH, 61))
 
 
 def draw_window(fish):
