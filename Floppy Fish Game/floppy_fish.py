@@ -181,7 +181,7 @@ def main():
                 run = False
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE and not home_screen:
                     fish_momentum -= 27
                     FISH_FLOP_SOUND.play()
                     idle = False
