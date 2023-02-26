@@ -157,8 +157,8 @@ def draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
     for net in bot_nets_active:
         WIN.blit(BOT_NET_SPRITE, net)
 
-    WIN.blit(final_score_text, (0, 50))
-    WIN.blit(high_score_text, (0, 0))
+    WIN.blit(final_score_text, (10, 50))
+    WIN.blit(high_score_text, (10, 0))
 
     pygame.display.update()
 
@@ -225,11 +225,13 @@ def main(restart=0):
 
             if event.type == COLLISION_ROD:
                 run = False
-                # FIXME: INCLUDE SOUND!!!!!!!! & END SCREEN
+                if final_score > high_score:
+                    high_score = final_score
 
             if event.type == COLLISION_NET:
                 run = False
-                # FIXME: INCLUDE SOUND!!!!!!!! & END SCREEN
+                if final_score > high_score:
+                    high_score = final_score
 
             if event.type == ONE_POINT:
                 final_score += 1
@@ -259,9 +261,13 @@ def main(restart=0):
             pygame.display.update()
 
         if idle:
+            final_score_text = TITLE_FONT.render(f"Score: {str(final_score)}", True, WHITE)
+            high_score_text = TITLE_FONT.render(f"High Score: fix me", True, WHITE)
             begin_txt = TITLE_FONT_SMALL.render('Press Space To Jump', True, LIGHT_BLUE)
             WIN.blit(BACKGROUND, (background_x, 0))
             WIN.blit(BACKGROUND, (background_x2, 0))
+            WIN.blit(final_score_text, (10, 50))
+            WIN.blit(high_score_text, (10, 0))
             WIN.blit(FISH_SPRITE, fish)
             WIN.blit(begin_txt, (fish.x - 80, fish.y - 50))
             for rod in top_rods_active:
