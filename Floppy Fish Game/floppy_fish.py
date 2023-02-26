@@ -137,9 +137,9 @@ def draw_window_home_screen():
 
 
 def draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
-                     bot_rods_active, background_x, background_x2, final_score):
+                     bot_rods_active, background_x, background_x2, final_score, high_score):
     final_score_text = TITLE_FONT.render(f"Score: {str(final_score)}", True, WHITE)
-    high_score_text = TITLE_FONT.render(f"High Score: fix me", True, WHITE)
+    high_score_text = TITLE_FONT.render(f"High Score: {str(high_score)}", True, WHITE)
 
     WIN.blit(BACKGROUND, (background_x, 0))
     WIN.blit(BACKGROUND, (background_x2, 0))
@@ -163,7 +163,7 @@ def draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
     pygame.display.update()
 
 
-def main(restart=0):
+def main(restart=0, high_score=0):
     if restart == 0:
         SOUNDTRACK.play()
 
@@ -242,7 +242,7 @@ def main(restart=0):
             title = pygame.Rect(-2, 0, 600, 500)
             small_fish = pygame.Rect(248, 300, 30, 30)
             high_score_txt = TITLE_FONT_SMALL.render('Current High Score:', True, LIGHT_BLUE)
-            high_score = HIGH_SCORE_FONT.render('8', True, LIGHT_BLUE)  # FIXME: needs to display high score
+            high_score = HIGH_SCORE_FONT.render('69', True, LIGHT_BLUE)
             cont_txt = TITLE_FONT.render('Press Enter To Continue', True, LIGHT_BLUE)
             pygame.time.delay(800)
             if not home_screen:
@@ -262,7 +262,7 @@ def main(restart=0):
 
         if idle:
             final_score_text = TITLE_FONT.render(f"Score: {str(final_score)}", True, WHITE)
-            high_score_text = TITLE_FONT.render(f"High Score: fix me", True, WHITE)
+            high_score_text = TITLE_FONT.render(f"High Score: {str(high_score)}", True, WHITE)
             begin_txt = TITLE_FONT_SMALL.render('Press Space To Jump', True, LIGHT_BLUE)
             WIN.blit(BACKGROUND, (background_x, 0))
             WIN.blit(BACKGROUND, (background_x2, 0))
@@ -313,9 +313,9 @@ def main(restart=0):
             handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active, fish)
 
             draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
-                             bot_rods_active, background_x, background_x2, final_score)
+                             bot_rods_active, background_x, background_x2, final_score, high_score)
 
-    main(1)
+    main(1, high_score)
 
 
 if __name__ == '__main__':
