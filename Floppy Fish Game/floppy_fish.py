@@ -2,6 +2,7 @@
 
 import pygame
 import os
+import random
 pygame.font.init()
 pygame.mixer.init()
 
@@ -16,6 +17,10 @@ WHITE = (255, 255, 255)
 FISH_WIDTH, FISH_HEIGHT = 43, 42
 NET_WIDTH, NET_HEIGHT = 55, 61
 NET_VEL = -5
+NET_GAP = 260
+
+# Game Events
+NEW_NET = pygame.USEREVENT + 1
 
 # Sound Bytes
 FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 'floppy_fish_peter.mp3'))
@@ -26,31 +31,44 @@ FISH_SPRITE = pygame.transform.scale(
 NET_SPRITE = pygame.transform.scale(
     pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net.png')), (NET_WIDTH, NET_HEIGHT))
 ROD_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net_rod.png')), (NET_WIDTH, 200))
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net_rod.png')), (NET_WIDTH, 400))
 BOT_NET_SPRITE = pygame.transform.flip(pygame.transform.rotate(NET_SPRITE, 180), True, False)
 BOT_ROD_SPRITE = pygame.transform.flip(pygame.transform.rotate(ROD_SPRITE, 180), True, False)
 
 
 def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active):
+    num_net = 0
+    new_pos = None
+    if num_net % 4 == 0:
+        new_pos = random.randint(50, 229)
+
     for net in top_nets_active:
         net.x += NET_VEL
         if net.x + NET_WIDTH <= 0:
             net.x = 1100
+            net.y = new_pos
+            num_net += 1
 
     for rod in top_rods_active:
         rod.x += NET_VEL
         if rod.x + NET_WIDTH <= 0:
             rod.x = 1100
+            rod.y = -400 + new_pos
+            num_net += 1
 
     for net in bot_nets_active:
         net.x += NET_VEL
         if net.x + NET_WIDTH <= 0:
             net.x = 1100
+            net.y = new_pos + NET_GAP
+            num_net += 1
 
     for rod in bot_rods_active:
         rod.x += NET_VEL
         if rod.x + NET_WIDTH <= 0:
             rod.x = 1100
+            rod.y = new_pos + NET_GAP
+            num_net += 1
 
 
 def draw_window(fish, top_nets_active, top_rods_active, bot_nets_active, bot_rods_active):
@@ -77,23 +95,22 @@ def main():
     playing = False
     
     # Hit Boxes
-    fish = pygame.Rect(200, 100, 40, 40)
-
-    top_nets_active = [pygame.Rect(700, 139, NET_WIDTH, NET_HEIGHT),
-                       pygame.Rect(1100, 139, NET_WIDTH, NET_HEIGHT),
-                       pygame.Rect(1500, 139, NET_WIDTH, NET_HEIGHT)]
-
-    top_rods_active = [pygame.Rect(700, 0, 10, 139),
-                       pygame.Rect(1100, 0, 10, 139),
-                       pygame.Rect(1500, 0, 10, 139)]
-
-    bot_nets_active = [pygame.Rect(700, 400, NET_WIDTH, NET_HEIGHT),
-                       pygame.Rect(1100, 400, NET_WIDTH, NET_HEIGHT),
-                       pygame.Rect(1500, 400, NET_WIDTH, NET_HEIGHT)]
-
-    bot_rods_active = [pygame.Rect(700, 400, 10, 200),
-                       pygame.Rect(1100, 400, 10, 200),
-                       pygame.Rect(1500, 400, 10, 200)]
+    fish = pygame.Rect(200, 300, 40, 40)
+    pos_1, pos_2, pos_3 = 140, random.randint(50, 229), random.randint(50, 229)
+    nets_active = [pygame.Rect(700, pos_1, NET_WIDTH, NET_HEIGHT),
+                   pygame.Rect(1100, pos_2, NET_WIDTH, NET_HEIGHT),
+                   pygame.Rect(1500, pos_3, NET_WIDTH, NET_HEIGHT),
+                   pygame.Rect(700, -400 + pos_1, 10, 139),
+                   pygame.Rect(1100, -400 + pos_2, 10, 139),
+                   pygame.Rect(1500, -400 + pos_3, 10, 139),
+                   pygame.Rect(700, pos_1 + NET_GAP, NET_WIDTH, NET_HEIGHT),
+                   pygame.Rect(1100, pos_2 + NET_GAP, NET_WIDTH, NET_HEIGHT),
+                   pygame.Rect(1500, pos_3 + NET_GAP, NET_WIDTH, NET_HEIGHT),
+                   pygame.Rect(700, pos_1 + NET_GAP, 10, 200),
+                   pygame.Rect(1100, pos_2 + NET_GAP, 10, 200),
+                   pygame.Rect(1500, pos_3 + NET_GAP, 10, 200)]
+    top_nets_active, top_rods_active = (nets_active[0:3]), (nets_active[3:6])
+    bot_nets_active, bot_rods_active = (nets_active[6:9]), (nets_active[9:12])
 
     clock = pygame.time.Clock()  # fps limiter
     run = True
@@ -107,25 +124,23 @@ def main():
                 if event.key == pygame.K_SPACE:
                     fish_momentum -= 27
                     FISH_FLOP_SOUND.play()
-
-                if event.key == pygame.K_RIGHT:  # FIXME: make this start game.
                     playing = True
 
-        # Fish Momentum
-        fish_momentum += 1
-        if fish_momentum > 12:
-            fish_momentum = 12
-        if fish_momentum < -18:
-            fish_momentum = -18
-        fish.y += fish_momentum
-
-        # Fish Ceiling
-        if fish.y <= 0:
-            fish.y = 0
-        if fish.y >= 600 - FISH_HEIGHT:
-            fish.y = 600 - FISH_HEIGHT
-
         if playing:
+            # Fish Momentum
+            fish_momentum += 1
+            if fish_momentum > 12:
+                fish_momentum = 12
+            if fish_momentum < -18:
+                fish_momentum = -18
+            fish.y += fish_momentum
+
+            # Fish Ceiling
+            if fish.y <= 0:
+                fish.y = 0
+            if fish.y >= 600 - FISH_HEIGHT:
+                fish.y = 600 - FISH_HEIGHT
+
             handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active)
 
         draw_window(fish, top_nets_active, top_rods_active, bot_nets_active, bot_rods_active)
