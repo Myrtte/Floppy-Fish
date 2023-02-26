@@ -35,6 +35,8 @@ FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 
 MENU_SELECT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\fish_flop.mp3')
 INTRO_SOUND = pygame.mixer.Sound('Assets\\floppy_fish_assets\\intro_sound.mp3')
 SOUNDTRACK = pygame.mixer.Sound('Assets\\floppy_fish_assets\\soundtrack.mp3')
+NET_HIT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\net_hit.mp3')
+ROD_HIT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\rod_hit.mp3')
 
 # Sprites
 TITLE = pygame.transform.scale(
@@ -185,15 +187,15 @@ def main(restart=0, high_score=0):
     nets_active = [pygame.Rect(700, pos_1, NET_WIDTH, NET_HEIGHT),
                    pygame.Rect(1100, pos_2, NET_WIDTH, NET_HEIGHT),
                    pygame.Rect(1500, pos_3, NET_WIDTH, NET_HEIGHT),
-                   pygame.Rect(700, -400 + pos_1, 10, 139),
-                   pygame.Rect(1100, -400 + pos_2, 10, 139),
-                   pygame.Rect(1500, -400 + pos_3, 10, 139),
+                   pygame.Rect(700, -400 + pos_1, 10, 400),
+                   pygame.Rect(1100, -400 + pos_2, 10, 400),
+                   pygame.Rect(1500, -400 + pos_3, 10, 400),
                    pygame.Rect(700, pos_1 + NET_GAP, NET_WIDTH, NET_HEIGHT),
                    pygame.Rect(1100, pos_2 + NET_GAP, NET_WIDTH, NET_HEIGHT),
                    pygame.Rect(1500, pos_3 + NET_GAP, NET_WIDTH, NET_HEIGHT),
-                   pygame.Rect(700, pos_1 + NET_GAP, 10, 200),
-                   pygame.Rect(1100, pos_2 + NET_GAP, 10, 200),
-                   pygame.Rect(1500, pos_3 + NET_GAP, 10, 200)]
+                   pygame.Rect(700, pos_1 + NET_GAP + NET_HEIGHT, 10, 400),
+                   pygame.Rect(1100, pos_2 + NET_GAP + NET_HEIGHT, 10, 400),
+                   pygame.Rect(1500, pos_3 + NET_GAP + NET_HEIGHT, 10, 400)]
     top_nets_active, top_rods_active = (nets_active[0:3]), (nets_active[3:6])
     bot_nets_active, bot_rods_active = (nets_active[6:9]), (nets_active[9:12])
 
@@ -224,11 +226,13 @@ def main(restart=0, high_score=0):
                     idle = True
 
             if event.type == COLLISION_ROD:
+                ROD_HIT.play()
                 run = False
                 if final_score > high_score:
                     high_score = final_score
 
             if event.type == COLLISION_NET:
+                NET_HIT.play()
                 run = False
                 if final_score > high_score:
                     high_score = final_score
