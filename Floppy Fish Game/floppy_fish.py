@@ -128,10 +128,10 @@ def draw_window_home_screen():
         if title.x <= 0:
             break
     high_score_txt = TITLE_FONT_SMALL.render('Current High Score:', True, LIGHT_BLUE)
-    high_score = HIGH_SCORE_FONT.render('8', True, LIGHT_BLUE)  # FIXME: needs to display high score
+    hs_high_score = HIGH_SCORE_FONT.render('69', True, LIGHT_BLUE)
     WIN.blit(high_score_txt, (550, 230))
-    WIN.blit(high_score, (
-        500 + high_score_txt.get_width() // 2 + high_score.get_width() // 2, 220 + high_score_txt.get_height()))
+    WIN.blit(hs_high_score, (
+        450 + high_score_txt.get_width() // 2 + hs_high_score.get_width() // 2, 220 + high_score_txt.get_height()))
     INTRO_SOUND.play()
     pygame.display.update()
 
@@ -242,7 +242,7 @@ def main(restart=0, high_score=0):
             title = pygame.Rect(-2, 0, 600, 500)
             small_fish = pygame.Rect(248, 300, 30, 30)
             high_score_txt = TITLE_FONT_SMALL.render('Current High Score:', True, LIGHT_BLUE)
-            high_score = HIGH_SCORE_FONT.render('69', True, LIGHT_BLUE)
+            hs_high_score = HIGH_SCORE_FONT.render('69', True, LIGHT_BLUE)
             cont_txt = TITLE_FONT.render('Press Enter To Continue', True, LIGHT_BLUE)
             pygame.time.delay(800)
             if not home_screen:
@@ -256,13 +256,13 @@ def main(restart=0, high_score=0):
             WIN.blit(FLIPPED_FISH, small_fish)
             WIN.blit(TITLE, title)
             WIN.blit(high_score_txt, (550, 230))
-            WIN.blit(high_score, (
-                500 + high_score_txt.get_width() // 2 + high_score.get_width() // 2, 220 + high_score_txt.get_height()))
+            WIN.blit(hs_high_score, (450 + high_score_txt.get_width() // 2 + hs_high_score.get_width() // 2,
+                                     220 + high_score_txt.get_height()))
             pygame.display.update()
 
         if idle:
             final_score_text = TITLE_FONT.render(f"Score: {str(final_score)}", True, WHITE)
-            high_score_text = TITLE_FONT.render(f"High Score: {str(high_score)}", True, WHITE)
+            high_score_text = TITLE_FONT.render(f"High Score: {high_score}", True, WHITE)
             begin_txt = TITLE_FONT_SMALL.render('Press Space To Jump', True, LIGHT_BLUE)
             WIN.blit(BACKGROUND, (background_x, 0))
             WIN.blit(BACKGROUND, (background_x2, 0))
