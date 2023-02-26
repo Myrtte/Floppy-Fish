@@ -1,5 +1,4 @@
 """Flappy Bird clone; first game made without tutorial"""
-
 import pygame
 import os
 import random
@@ -32,6 +31,9 @@ HIGH_SCORE_FONT = pygame.font.SysFont('segoescript', 70)
 
 # Sound Bytes
 FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 'floppy_fish_peter.mp3'))
+MENU_SELECT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\fish_flop.mp3')
+INTRO_SOUND = pygame.mixer.Sound('Assets\\floppy_fish_assets\\intro_sound.mp3')
+SOUNDTRACK = pygame.mixer.Sound('Assets\\floppy_fish_assets\\soundtrack.mp3')
 
 # Sprites
 TITLE = pygame.transform.scale(
@@ -113,7 +115,7 @@ def draw_window_home_screen():
     WIN.blit(high_score_txt, (550, 230))
     WIN.blit(high_score, (
         500 + high_score_txt.get_width() // 2 + high_score.get_width() // 2, 220 + high_score_txt.get_height()))
-    FISH_FLOP_SOUND.play()
+    INTRO_SOUND.play()
     pygame.display.update()
 
 
@@ -138,6 +140,8 @@ def draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
 
 
 def main():
+    SOUNDTRACK.play()
+
     # Game variables
     fish_momentum = 10
     playing = False
@@ -184,6 +188,7 @@ def main():
                     playing = True
 
                 if event.key == pygame.K_RETURN:
+                    MENU_SELECT.play()
                     home_screen = False
                     idle = True
 
