@@ -22,6 +22,7 @@ NET_GAP = 260
 # Game Events
 COLLISION_NET = pygame.USEREVENT + 1
 COLLISION_ROD = pygame.USEREVENT + 2
+ONE_POINT = pygame.USEREVENT + 3
 
 # Fonts
 TITLE_FONT = pygame.font.SysFont('segoescript', 40)
@@ -52,9 +53,11 @@ BOT_NET_SPRITE = pygame.transform.flip(pygame.transform.rotate(NET_SPRITE, 180),
 BOT_ROD_SPRITE = pygame.transform.flip(pygame.transform.rotate(ROD_SPRITE, 180), True, False)
 
 
-def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active):
+def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active, fish):
+    
     num_net = 0
     new_pos = None
+    
     if num_net % 4 == 0:
         new_pos = random.randint(50, 229)
 
@@ -64,6 +67,12 @@ def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_acti
             net.x = 1100
             net.y = new_pos
             num_net += 1
+            
+        if fish.colliderect(net):
+            pygame.event.post(pygame.event.Event(COLLISION_NET))
+
+        if fish.x == net.x:
+            pygame.event.post(pygame.event.Event(ONE_POINT))
 
     for rod in top_rods_active:
         rod.x += NET_VEL
@@ -71,13 +80,19 @@ def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_acti
             rod.x = 1100
             rod.y = -400 + new_pos
             num_net += 1
-
+            
+        if fish.colliderect(rod):
+            pygame.event.post(pygame.event.Event(COLLISION_ROD))
+            
     for net in bot_nets_active:
         net.x += NET_VEL
         if net.x + NET_WIDTH <= 0:
             net.x = 1100
             net.y = new_pos + NET_GAP
             num_net += 1
+        
+        if fish.colliderect(net):
+            pygame.event.post(pygame.event.Event(COLLISION_NET))
 
     for rod in bot_rods_active:
         rod.x += NET_VEL
@@ -85,8 +100,11 @@ def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_acti
             rod.x = 1100
             rod.y = new_pos + NET_GAP
             num_net += 1
-
-
+            
+        if fish.colliderect(rod):
+            pygame.event.post(pygame.event.Event(COLLISION_ROD))
+            
+            
 def draw_window_home_screen():
     title = pygame.Rect(100, 0, 600, 500)
     small_fish = pygame.Rect(350, 300, 30, 30)
@@ -120,10 +138,12 @@ def draw_window_home_screen():
 
 
 def draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
-                     bot_rods_active, background_x, background_x2):
+                     bot_rods_active, background_x, background_x2, final_score):
+    
     WIN.blit(BACKGROUND, (background_x, 0))
     WIN.blit(BACKGROUND, (background_x2, 0))
     WIN.blit(FISH_SPRITE, fish)
+    
     for rod in top_rods_active:
         WIN.blit(ROD_SPRITE, rod)
 
@@ -135,7 +155,10 @@ def draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
 
     for net in bot_nets_active:
         WIN.blit(BOT_NET_SPRITE, net)
-
+        
+    WIN.blit(final_score_text, (0, 50))
+    WIN.blit(high_score_text, (0, 0))
+    
     pygame.display.update()
 
 
@@ -149,6 +172,7 @@ def main():
     home_screen = True
     background_x = 0
     background_x2 = 2400
+    final_score = 0 
 
     # Hit Boxes
     fish = pygame.Rect(200, 300, 40, 40)
@@ -179,18 +203,30 @@ def main():
         for event in pygame.event.get():  # game events
             if event.type == pygame.QUIT:  # stop program when game window closed
                 run = False
-
+                pygame.quit()
+                
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and not home_screen:
                     fish_momentum -= 27
                     FISH_FLOP_SOUND.play()
                     idle = False
                     playing = True
-
+                
                 if event.key == pygame.K_RETURN:
                     MENU_SELECT.play()
                     home_screen = False
                     idle = True
+                    
+                if event.type == COLLISION_ROD:
+                    run = False
+                    # FIXME: INCLUDE SOUND!!!!!!!! & ENDSCREEN
+
+                if event.type == COLLISION_NET:
+                    run = False
+                    # FIXME: INCLUDE SOUND!!!!!!!! & ENDSCREEN
+                
+                if event.type == ONE_POINT:
+                    final_score += 1
 
         if home_screen:
             if not home_screen:
@@ -262,12 +298,12 @@ def main():
             if background_x == -2400:
                 background_x = background_x2 + 2400
 
-            handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active)
+            handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active, fish)
 
             draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
-                             bot_rods_active, background_x, background_x2)
+                             bot_rods_active, background_x, background_x2, final_score)
 
-    pygame.quit()
+    main()
 
 
 if __name__ == '__main__':
