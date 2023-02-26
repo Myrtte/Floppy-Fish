@@ -26,6 +26,8 @@ NEW_NET = pygame.USEREVENT + 1
 FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 'floppy_fish_peter.mp3'))
 
 # Sprites
+BACKROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'backround.png')), (WIDTH * 3, HEIGHT))
 FISH_SPRITE = pygame.transform.scale(
     pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish.png')), (FISH_WIDTH, FISH_HEIGHT))
 NET_SPRITE = pygame.transform.scale(
@@ -71,8 +73,9 @@ def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_acti
             num_net += 1
 
 
-def draw_window(fish, top_nets_active, top_rods_active, bot_nets_active, bot_rods_active):
-    WIN.fill(BLUE)
+def draw_window(fish, top_nets_active, top_rods_active, bot_nets_active, bot_rods_active, backround_x, backround_x2):
+    WIN.blit(BACKROUND, (backround_x, 0))
+    WIN.blit(BACKROUND, (backround_x2, 0))
     WIN.blit(FISH_SPRITE, fish)
     for rod in top_rods_active:
         WIN.blit(ROD_SPRITE, rod)
@@ -93,7 +96,9 @@ def main():
     # Game variables
     fish_momentum = 10
     playing = False
-    
+    backround_x = 0
+    backround_x2 = 2400
+
     # Hit Boxes
     fish = pygame.Rect(200, 300, 40, 40)
     pos_1, pos_2, pos_3 = 140, random.randint(50, 229), random.randint(50, 229)
@@ -131,6 +136,7 @@ def main():
             fish_momentum += 1
             if fish_momentum > 12:
                 fish_momentum = 12
+
             if fish_momentum < -18:
                 fish_momentum = -18
             fish.y += fish_momentum
@@ -138,12 +144,22 @@ def main():
             # Fish Ceiling
             if fish.y <= 0:
                 fish.y = 0
+
             if fish.y >= 600 - FISH_HEIGHT:
                 fish.y = 600 - FISH_HEIGHT
 
+            # Backround
+            backround_x2 -= 1
+            if backround_x2 == -2400:
+                backround_x2 = backround_x + 2400
+
+            backround_x -= 1
+            if backround_x == -2400:
+                backround_x = backround_x2 + 2400
+            
             handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active)
 
-        draw_window(fish, top_nets_active, top_rods_active, bot_nets_active, bot_rods_active)
+        draw_window(fish, top_nets_active, top_rods_active, bot_nets_active, bot_rods_active, backround_x, backround_x2)
 
     pygame.quit()
 
