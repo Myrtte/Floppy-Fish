@@ -55,7 +55,7 @@ BOT_NET_SPRITE = pygame.transform.flip(pygame.transform.rotate(NET_SPRITE, 180),
 BOT_ROD_SPRITE = pygame.transform.flip(pygame.transform.rotate(ROD_SPRITE, 180), True, False)
 
 pygame.display.set_icon(FISH_SPRITE)
-
+#hi
 
 def handle_nets(top_nets_active, top_rods_active, bot_nets_active, bot_rods_active, fish):
     num_net = 0
