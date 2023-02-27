@@ -40,17 +40,17 @@ ROD_HIT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\rod_hit.mp3')
 
 # Sprites
 TITLE = pygame.transform.scale(
-    pygame.image.load('Assets\\floppy_fish_assets\\floppy_fish_text.png').convert_alpha, (600, 500))
+    pygame.image.load('Assets\\floppy_fish_assets\\floppy_fish_text.png').convert_alpha(), (600, 500))
 BACKGROUND = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'background.png')).convert_alpha, (WIDTH * 3, HEIGHT))
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'background.png')).convert_alpha(), (WIDTH * 3, HEIGHT))
 FISH_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish.png')).convert_alpha, (FISH_WIDTH, FISH_HEIGHT))
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish.png')).convert_alpha(), (FISH_WIDTH, FISH_HEIGHT))
 FLIPPED_FISH = pygame.transform.rotate(
     pygame.transform.scale(FISH_SPRITE, (30, 30)), 10)
 NET_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net.png')).convert_alpha, (NET_WIDTH, NET_HEIGHT))
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net.png')).convert_alpha(), (NET_WIDTH, NET_HEIGHT))
 ROD_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net_rod.png')).convert_alpha, (NET_WIDTH, 400))
+    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net_rod.png')).convert_alpha(), (NET_WIDTH, 400))
 BOT_NET_SPRITE = pygame.transform.flip(pygame.transform.rotate(NET_SPRITE, 180), True, False)
 BOT_ROD_SPRITE = pygame.transform.flip(pygame.transform.rotate(ROD_SPRITE, 180), True, False)
 
