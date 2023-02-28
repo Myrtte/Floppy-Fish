@@ -1,8 +1,8 @@
 """Flappy Bird clone; first game made without tutorial"""
 import pygame
-import os
 import random
-
+from sys import exit
+pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
@@ -31,26 +31,26 @@ TITLE_FONT_SMALL = pygame.font.SysFont('segoescript', 20)
 HIGH_SCORE_FONT = pygame.font.SysFont('segoescript', 70)
 
 # Sound Bytes
-FISH_FLOP_SOUND = pygame.mixer.Sound(os.path.join('Assets\\floppy_fish_assets', 'floppy_fish_peter.mp3'))
-MENU_SELECT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\fish_flop.mp3')
-INTRO_SOUND = pygame.mixer.Sound('Assets\\floppy_fish_assets\\intro_sound.mp3')
-SOUNDTRACK = pygame.mixer.Sound('Assets\\floppy_fish_assets\\soundtrack.mp3')
-NET_HIT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\net_hit.mp3')
-ROD_HIT = pygame.mixer.Sound('Assets\\floppy_fish_assets\\rod_hit.mp3')
+FISH_FLOP_SOUND = pygame.mixer.Sound('Assets\\floppy_fish\\sounds\\floppy_fish_peter.mp3')
+INTRO_SOUND = pygame.mixer.Sound('Assets\\floppy_fish\\sounds\\intro_sound.mp3')
+SOUNDTRACK = pygame.mixer.Sound('Assets\\floppy_fish\\sounds\\soundtrack.mp3')
+NET_HIT = pygame.mixer.Sound('Assets\\floppy_fish\\sounds\\net_hit.mp3')
+ROD_HIT = pygame.mixer.Sound('Assets\\floppy_fish\\sounds\\rod_hit.mp3')
+MENU_SELECT = pygame.mixer.Sound('Assets\\floppy_fish\\sounds\\fish_flop.mp3')
 
 # Sprites
 TITLE = pygame.transform.scale(
-    pygame.image.load('Assets\\floppy_fish_assets\\floppy_fish_text.png').convert_alpha(), (600, 500))
+    pygame.image.load('Assets\\floppy_fish\\graphics\\floppy_fish_text.png').convert_alpha(), (600, 500))
 BACKGROUND = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'background.png')).convert_alpha(), (WIDTH * 3, HEIGHT))
+    pygame.image.load('Assets\\floppy_fish\\graphics\\background.png').convert_alpha(), (WIDTH * 3, HEIGHT))
 FISH_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish.png')).convert_alpha(), (FISH_WIDTH, FISH_HEIGHT))
+    pygame.image.load('Assets\\floppy_fish\\graphics\\fish.png').convert_alpha(), (FISH_WIDTH, FISH_HEIGHT))
 FLIPPED_FISH = pygame.transform.rotate(
     pygame.transform.scale(FISH_SPRITE, (30, 30)), 10)
 NET_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net.png')).convert_alpha(), (NET_WIDTH, NET_HEIGHT))
+    pygame.image.load('Assets\\floppy_fish\\graphics\\fish_net.png').convert_alpha(), (NET_WIDTH, NET_HEIGHT))
 ROD_SPRITE = pygame.transform.scale(
-    pygame.image.load(os.path.join('Assets\\floppy_fish_assets', 'fish_net_rod.png')).convert_alpha(), (NET_WIDTH, 400))
+    pygame.image.load('Assets\\floppy_fish\\graphics\\fish_net_rod.png').convert_alpha(), (NET_WIDTH, 400))
 BOT_NET_SPRITE = pygame.transform.flip(pygame.transform.rotate(NET_SPRITE, 180), True, False)
 BOT_ROD_SPRITE = pygame.transform.flip(pygame.transform.rotate(ROD_SPRITE, 180), True, False)
 
@@ -170,7 +170,6 @@ def draw_window_game(fish, top_nets_active, top_rods_active, bot_nets_active,
 def main(restart=0, high_score=0):
     if restart == 0:
         SOUNDTRACK.play()
-
     # Game variables
     playing = False
     idle = False
@@ -212,8 +211,8 @@ def main(restart=0, high_score=0):
         clock.tick(60)  # fps limiter
         for event in pygame.event.get():  # game events
             if event.type == pygame.QUIT:  # stop program when game window closed
-                run = False
                 pygame.quit()
+                exit()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and not home_screen:
